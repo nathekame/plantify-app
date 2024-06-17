@@ -8,7 +8,9 @@ This project consists of a frontend built with [NextJS](https://nextjs.org/) and
  - download the trained model file
  - copy the downloaded model file into the training folder inside the cloned repo
 
+
 ### Project Dependencies
+
 
 - NodeJS - [Install](https://nodejs.org/en/learn/getting-started/how-to-install-nodejs)
 - Python - [Download Python](https://www.python.org/downloads/)

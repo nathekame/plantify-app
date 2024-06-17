@@ -8,6 +8,11 @@
 
 /dev/app/node_modules
 
+/dev/api/uploads
+
+/dev/api/runs
+
+
 # testing
 /coverage
 
