@@ -10,10 +10,6 @@ import config from '@/config/config';
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> sprint-0
 const PlantIdentificationForm: React.FC = () => {
 
 
