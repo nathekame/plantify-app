@@ -8,6 +8,8 @@
 
 /dev/app/node_modules
 
+/data-collection
+
 # testing
 /coverage
 
