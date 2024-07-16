@@ -20,6 +20,7 @@ from fastapi.staticfiles import StaticFiles
 
 
 from controller import identify_leaf
+from utility import save_image
 
 
 import pickle
@@ -57,7 +58,7 @@ app.mount("/runs", StaticFiles(directory="runs"), name="images")
 class ImageData(BaseModel):
     image_data: str
 
-@app.post("/upload/")
+@app.post("/identify-plant/")
 async def upload_image(request: Request, image_data: UploadFile = File(...)):
 
 
@@ -87,7 +88,7 @@ async def upload_image(request: Request, image_data: UploadFile = File(...)):
     # print(type(image_data.filename))
 
     # print('the image bytes ==> ' , image_bytes)
-    # print('the image bytes raw image_data from request ==> ' , type(image_data))
+    # print('path to identify ==> ' , file_path)
 
     # Process the image (replace this with your actual image processing code)
     process_image = identify_leaf(file_path)
@@ -108,9 +109,101 @@ async def upload_image(request: Request, image_data: UploadFile = File(...)):
 
 
 
-def postprocess_prediction(prediction):
-    # Add postprocessing steps here
-    return "answer"
+# def postprocess_prediction(prediction):
+#     # Add postprocessing steps here
+#     return "answer"
+
+
+
+@app.post("/diagnose-plant/")
+async def upload_image(request: Request, image_data: UploadFile = File(...)):
+
+
+
+    # current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    # new_filename = f"img_{current_time}{os.path.splitext(image_data.filename)[1]}"
+
+
+
+    # img_data = await image_data.read()
+    
+    # save_directory = "uploads"
+
+    # # Save the uploaded file to disk with the new filename
+    # file_path = os.path.join(save_directory, new_filename)
+    # with open(file_path, "wb") as buffer:
+    #     buffer.write(img_data)
+
+    # # Construct the direct URL path of the saved file
+    # file_url = f"{request.base_url}{file_path}"
+
+    get_file_path = save_image(image_data)
+    print('the image bytes for diagnsis ==> ' , get_file_path)
+
+
+
+  
+    process_image = identify_leaf(get_file_path)
+
+
+    key, value = process_image
+
+    resp_obj = {
+        'input_image': get_file_path,
+        # 'output_image': process_image['output_img'],
+        'class_id': key,
+        'specie': value
+
+    }
+
+
+    return resp_obj
+
+
+
+@app.post("/treat-plant/")
+async def upload_image(request: Request, image_data: UploadFile = File(...)):
+
+
+
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    new_filename = f"img_{current_time}{os.path.splitext(image_data.filename)[1]}"
+
+
+
+    img_data = await image_data.read()
+    
+    save_directory = "uploads"
+
+    # Save the uploaded file to disk with the new filename
+    file_path = os.path.join(save_directory, new_filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(img_data)
+
+    # Construct the direct URL path of the saved file
+    file_url = f"{request.base_url}{file_path}"
+
+ 
+    process_image = identify_leaf(file_path)
+
+
+    key, value = process_image
+
+    resp_obj = {
+        'input_image': file_path,
+        # 'output_image': process_image['output_img'],
+        'class_id': key,
+        'specie': value
+
+    }
+
+
+    return resp_obj
+
+
+
+
+
 
 
 # uvicorn.run(app, host=["localhost", "10.144.121.247"], port=8000)

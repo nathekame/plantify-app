@@ -1,6 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/plant-identification/page": "app/plant-identification/page.js",
   "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/plant-identification/page": "app/plant-identification/page.js",
+  "/plant-diagnosis/page": "app/plant-diagnosis/page.js",
+  "/plant-treatment/page": "app/plant-treatment/page.js",
+  "/support/page": "app/support/page.js"
 }

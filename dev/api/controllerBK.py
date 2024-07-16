@@ -20,8 +20,9 @@ import json
 # model_path = os.path.join(os.path.dirname(__file__), '../../training/densenet_with_augmentation.keras')
 # model_path = os.path.join(os.path.dirname(__file__), '../../training/densenet_with_augmentation.keras')
 
-model_path = '/home/noa/Next/plantify/app/plantify-app/training/densenet_with_augmentation.keras'
+# model_path = '/home/noa/Next/plantify/app/plantify-app/training/densenet_with_augmentation.keras'
 
+model_path = "/home/noa/Next/plantify/densenet_with_augmentation_newer.keras"
 
 
 
@@ -31,18 +32,25 @@ if not os.path.isfile(model_path):
 
 
 
-# model = load_model(model_path)
+model = load_model(model_path)
 
-model = Sequential()
+# model = Sequential()
+
+
+# try:
+#     # model = load_model(model_path)
+#     model.load(model_path)
+
+# except Exception as e:
+#     raise RuntimeError(f"Failed to load model. Ensure the model file exists at {model_path}. Error: {str(e)}")
 
 
 try:
-    # model = load_model(model_path)
-    model.load(model_path)
-
+    model = load_model(model_path)
+    print("*******************Model loaded successfully*****************")
 except Exception as e:
-    raise RuntimeError(f"Failed to load model. Ensure the model file exists at {model_path}. Error: {str(e)}")
-
+    print(f"Failed to load model. Error: {str(e)}")
+    exit()
 
 # model = load_model('../../training/trained_model.h5')
 

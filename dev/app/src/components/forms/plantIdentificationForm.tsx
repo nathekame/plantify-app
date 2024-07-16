@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
+import config from '@/config/config';
 
 
 
@@ -21,7 +23,7 @@ const PlantIdentificationForm: React.FC = () => {
   const [apiResultCode, setApiResultCode] = useState<number>();
 
 
-  const [specie, setSpecie] = useState<string>('');
+  const [specie, setSpecie] = useState<[]>();
   const [specieClassID, setSpecieClassID] = useState<number>();
 
 
@@ -52,20 +54,23 @@ const PlantIdentificationForm: React.FC = () => {
       //     'Content-Type': 'multipart/form-data'
       //   }
       // });
-      const response = await axios.post('http://localhost:8000/upload', formData, {
+      const response = await axios.post(`${config.backendUrl}/identify-plant`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      // console.log('Upload successful:', response.data);
+      console.log('Upload successful:', response.data);
 
-      // console.log('Upload successful:', JSON.stringify(response));
+      console.log('Upload successful:', JSON.stringify(response));
 
 
 
       if (response.status) {
 
-        const apiURL = 'http://localhost:8000/';
+        console.log('THE RESPONSE ==> ' + JSON.stringify(response.data))
+
+        const apiURL = `${config.backendUrl}/`;
+        
         // const apiURL = 'http://10.144.119.175:8000/';
 
 
@@ -172,7 +177,14 @@ const PlantIdentificationForm: React.FC = () => {
                         <CardContent>
                         <div className='flex justify-between'>
                           <input type="file" accept="image/*" onChange={handleFileChange} />
+                          <div className='flex gap-1'>
                           <Button onClick={handleUpload} disabled={!selectedFile || isLoading}>Upload</Button>
+                          
+                          <Link href="/">
+                            <Button className="bg-blue-500 text-white py-2 px-4 rounded text-center hover:bg-blue-500 hover:font-extrabold">Back Home</Button>
+                          </Link>
+                          </div>
+                         
                         </div>
 
                         <div className='flex justify-center font-extrabold text-xl'>
@@ -214,6 +226,9 @@ const PlantIdentificationForm: React.FC = () => {
 
                               <p className="mb-2 flex justify-center font-bold">{specie}</p>
                               <p className="mb-2 flex justify-center font-bold">{specieClassID}</p>
+                              {/* {specie?.map((item) => (
+                                <p key={item[0]} >{item[1]}</p>
+                              ))} */}
                               <div className='flex justify-center mt-3'>
                                 <Button onClick={handleImageClear}>Clear Result</Button>
                               </div>

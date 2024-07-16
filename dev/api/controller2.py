@@ -3,7 +3,7 @@ https://github.com/asyaf/fun_mini_projects/blob/master/streamlit_examples/resnet
 
 import io
 from PIL import Image
-import streamlit as st
+# import streamlit as st
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.models import load_model
