@@ -1,0 +1,7 @@
+# latest versions as of 2023-05-17
+ipykernel==6.23.1  # kernel for Jupyter notebooks
+tensorflow==2.10.1 #tensorflow
+fastapi==0.110.1 #fastapi
+uvicorn==0.29.0 #uvicorn
+python-multipart==0.0.9  # file upload
+

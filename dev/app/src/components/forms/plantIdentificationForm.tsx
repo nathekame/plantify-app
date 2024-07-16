@@ -10,7 +10,10 @@ import config from '@/config/config';
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> sprint-0
 const PlantIdentificationForm: React.FC = () => {
 
 
@@ -47,7 +50,6 @@ const PlantIdentificationForm: React.FC = () => {
 
     const formData = new FormData();
     formData.append('image_data', selectedFile);
-
 
  
     try {

@@ -8,7 +8,12 @@
 
 /dev/app/node_modules
 
+/dev/api/uploads
+
+/dev/api/runs
+
 /data-collection
+
 
 # testing
 /coverage
@@ -38,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/data-collection
+/training
