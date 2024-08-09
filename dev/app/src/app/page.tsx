@@ -1,53 +1,43 @@
-'use client'
-import Image from "next/image";
-import WebForm from "@/components/forms/plantIdentificationForm";
-
-import React, { useState } from 'react';
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+'use client';
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import config from "@/config/config";
 
-
-const Home: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleChat = () => {
-    setIsOpen(!isOpen);
-  };
-
+const LandingPage: React.FC = () => {
+  console.log(config.frontendUrl)
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-200">
-    <div className="flex justify-center items-center">
-      <Image
-          src={`${config.frontendUrl}/landing.gif`}
-          alt="Landing"
-          layout="responsive"
-          width={1920}  
-          height={1080} 
+    <div className="relative flex justify-center items-center min-h-screen bg-gray-200">
+      {/* Background Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src={`${config.frontendUrl}/landing.jpg`}
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          className="w-full h-full"
         />
-    </div>
-    <div className="">
-    <h1 className="font-bold text-4xl flex justify-center">Plant Guard</h1>
+        
+        <div className="absolute inset-0 bg-black opacity-50 backdrop-blur-sm"></div>
+      </div>
 
-      <div className="grid grid-cols-2 gap-2 p-4 px-10">
-      <Link href="/plant-identification" className="bg-blue-500 text-white py-2 px-4 hover:py-2 hover:px-4 rounded text-center font-bold hover:bg-white hover:text-blue-500" >
-        Identify Plant
-      </Link>
-      <Link href="/plant-diagnosis" className="bg-green-500 text-white py-2 px-4 rounded text-center font-bold hover:bg-white hover:text-green-500">
-        Diagnose Plant
-      </Link>
-      <Link href="/plant-treatment" className="bg-red-500 text-white py-2 px-4 rounded text-center font-bold hover:bg-white hover:text-red-500">
-        Plant Treatment
-      </Link>
-      <Link href="/support" className="bg-yellow-500 text-white py-2 px-4 rounded text-center font-bold hover:bg-white hover:text-yellow-500">
-        Support Us
-      </Link>
+      {/* Content */}
+      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md p-4 bg-white border border-gray-300 rounded-lg">
+        <Link className="block bg-blue-500 text-white py-4 px-6 rounded text-center font-bold hover:bg-white hover:text-blue-500" href="/plant-identification">
+          Identify Plant
+        </Link>
+        <Link className="block bg-green-500 text-white py-4 px-6 rounded text-center font-bold hover:bg-white hover:text-green-500" href="/plant-diagnosis">
+          Diagnose Plant
+        </Link>
+        <Link className="block bg-red-500 text-white py-4 px-6 rounded text-center font-bold hover:bg-white hover:text-red-500" href="/plant-treatment">
+          Plant Treatment
+        </Link>
+        <Link className="block bg-yellow-500 text-white py-4 px-6 rounded text-center font-bold hover:bg-white hover:text-yellow-500" href="/support">
+          Support The Project
+        </Link>
+      </div>
     </div>
-    </div>
-    
-   
-  </div>
   );
 };
 
-export default Home;
+export default LandingPage;

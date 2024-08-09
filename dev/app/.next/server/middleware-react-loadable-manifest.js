@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"components/forms/plantDiagnosisForm.tsx -> ../../../treatments.json\":{\"id\":\"components/forms/plantDiagnosisForm.tsx -> ../../../treatments.json\",\"files\":[\"static/chunks/_app-pages-browser_treatments_json.js\"]}}"
