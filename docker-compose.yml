@@ -5,7 +5,9 @@ services:
     build:
       context: ./dev/app
       dockerfile: Dockerfile
-    image: plant-guard-frontend
+    image: plant-guard-frontend:production
+    env_file:
+      - .env
     ports:
       - "3000:3000"
     depends_on:
@@ -15,6 +17,9 @@ services:
     build:
       context: ./dev/api
       dockerfile: Dockerfile
-    image: plant-guard-backend-api
+    image: plant-guard-backend:production
+    env_file:
+      - .env
     ports:
       - "8000:8000"
+  

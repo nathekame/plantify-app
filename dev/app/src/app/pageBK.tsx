@@ -1,5 +1,5 @@
 'use client'
-import Image from "next/image";
+import Image from "next/legacy/image";
 // import WebForm from "@/components/forms/plantIdentificationForm";
 
 import React, { useState } from 'react';

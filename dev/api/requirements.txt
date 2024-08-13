@@ -15,6 +15,7 @@ executing==2.0.1
 fastapi==0.110.1
 flatbuffers==24.3.25
 gast==0.4.0
+git-filter-repo==2.45.0
 google-auth==2.30.0
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
@@ -23,7 +24,7 @@ h11==0.14.0
 h5py==3.11.0
 idna==3.7
 ipykernel==6.23.1
-ipython
+# ipython==8.25.0
 jedi==0.19.1
 jupyter_client==8.6.2
 jupyter_core==5.7.2
@@ -53,6 +54,7 @@ pydantic==2.7.3
 pydantic_core==2.18.4
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 python-multipart==0.0.9
 pyzmq==26.0.3
 requests==2.32.3
@@ -77,6 +79,3 @@ uvicorn==0.29.0
 wcwidth==0.2.13
 Werkzeug==3.0.3
 wrapt==1.16.0
-
-
-

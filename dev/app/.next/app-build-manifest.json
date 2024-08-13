@@ -1,40 +1,71 @@
 {
   "pages": {
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+    "/_not-found/page": [
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/app/_not-found/page-0b34623ff7fef559.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/css/9ac261487767f87d.css",
+      "static/chunks/app/layout-2ed7629851201d89.js"
     ],
     "/loading": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/loading.js"
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/app/loading-3dd07b82734a1737.js"
     ],
     "/plant-identification/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/plant-identification/page.js"
-    ],
-    "/plant-diagnosis/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/plant-diagnosis/page.js"
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/335-30978347043fc752.js",
+      "static/chunks/637-af390dfaf7c9cc57.js",
+      "static/chunks/472-88626057ffc60ccd.js",
+      "static/chunks/app/plant-identification/page-86adfe03d33f5be6.js"
     ],
     "/plant-treatment/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/plant-treatment/page.js"
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/335-30978347043fc752.js",
+      "static/chunks/637-af390dfaf7c9cc57.js",
+      "static/chunks/app/plant-treatment/page-2897aaa56d535f3a.js"
     ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+    "/support/page": [
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/335-30978347043fc752.js",
+      "static/chunks/app/support/page-437cc63ecdd70886.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/335-30978347043fc752.js",
+      "static/chunks/app/page-d874c972fa3734b5.js"
+    ],
+    "/plant-diagnosis/page": [
+      "static/chunks/webpack-9fe8bc0055775e4c.js",
+      "static/chunks/fd9d1056-8d42db6c53771e4c.js",
+      "static/chunks/23-19314534aa21971a.js",
+      "static/chunks/main-app-41a45e2ec41fa41b.js",
+      "static/chunks/335-30978347043fc752.js",
+      "static/chunks/637-af390dfaf7c9cc57.js",
+      "static/chunks/472-88626057ffc60ccd.js",
+      "static/chunks/app/plant-diagnosis/page-aeae1f783018b0c1.js"
     ]
   }
 }

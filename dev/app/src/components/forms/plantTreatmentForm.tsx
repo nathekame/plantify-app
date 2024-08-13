@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Button } from "@/components/ui/button"
 import axios from 'axios';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from 'next/link';
 import config from '@/config/config';
 

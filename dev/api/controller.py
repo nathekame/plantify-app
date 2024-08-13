@@ -1,321 +1,231 @@
 import tensorflow as tf
 from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
 import json
 import os
 from PIL import Image
+import io
+from pydantic import BaseModel
 
-from PIL import Image
-import numpy as np
-from tensorflow.keras.preprocessing.image import img_to_array
+# Paths to identification models
+I_MODEL_PATHS = [
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/vanilla.h5',
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/vgg16_vanilla.h5',
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/inception.h5'
+]
+# I_MODEL_PATHS = [
+#     '/app/models/vanilla.h5',
+#     '/app/models/vgg16_vanilla.h5',
+#     '/app/models/inception.h5'
+# ]
 
+# Paths to disease models
+# D_MODEL_PATHS = [
+#     '/home/noa/Next/plantify/app/venv/plantify-app/models/plant-disease-vanilla.h5',
+   
+# ]
 
-# Path to the model file
-# model_path = '../../training/dd/densenet_with_augmentation.keras'
+D_MODEL_PATHS = [
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/disease-vanilla.h5',
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/disease-vgg16.h5',
+    '/home/noa/Next/plantify/app/venv/plantify-app/models/disease-inception.h5',
 
-# model_path = '/home/noa/Next/plantify/app/plantify-app/training/densenet_with_augmentation.keras'
+   
+]
 
+# D_MODEL_PATHS = [
+#     '/app/models/disease-vanilla.h5',
+#     '/app/models/disease-vgg16.h5',
+#     '/app/models/disease-inception.h5',
 
-# model_path = 'bot_model.keras'
-
-
-# Load the model
-
-# model_path = '../../training/densenet_with_augmentation.keras'
-
-# from tensorflow import keras
-
-# import os
-# filepath = "densenet_with_augmentation.keras"
-# if not os.path.exists(filepath):
-#     print("File does not exist.")
-# else:
-#     print("File found.")
-
-# # filepath = "densenet_with_augmentation.keras"
-# try:
-#     model = keras.models.load_model(filepath)
-#     print("Model loaded successfully.")
-# except Exception as e:
-#     print(f"Failed to load model. Error: {e}")
-#     exit()
-
-
-# import zipfile
-
-# model_path = "/home/noa/Next/plantify/densenet_with_augmentation.keras"
-
-model_path = "/home/noa/Next/plantify/densenet_with_augmentation_newer.keras"
+# ]
 
 
-# if zipfile.is_zipfile(filepath):
-#     with zipfile.ZipFile(filepath, 'r') as zip_ref:
-#         zip_ref.printdir()
-#         print("The .keras file is a valid zip archive.")
-# else:
-#     print("The .keras file is not a valid zip archive.")
+POSITION_WEIGHTS = [5, 3, 1]  # Example weights: 1st place gets 5 points, 2nd gets 3, 3rd gets 1
 
+# Global variable for models
+i_models = []
+all_loaded_successfully = False
 
+def load_identification_models():
+    global i_models, all_i_loaded_successfully
+    all_i_loaded_successfully = True
+    for model_path in I_MODEL_PATHS:
+        try:
+            i_models.append(load_model(model_path))
+            print(f"****Model loaded successfully from {model_path}")
+        except Exception as e:
+            print(f"Failed to load model from {model_path}. Error: {str(e)}")
+            all_i_loaded_successfully = False
 
+# Global variable for models
+d_models = []
+all_d_loaded_successfully = False
 
-# import os
-# from tensorflow import keras
-# # from tf import keras
-
-# print(tf.__version__)
-
-# Define the file path
-# filepath = os.path.abspath("densenet_with_augmentation.keras")
-# print(f"Trying to load model from: {filepath}")
-
-
-
-# try:
-#     # Load the model
-#     model = tf.keras.models.load_model(filepath)  # Include custom_objects if necessary
-#     print("Model loaded this model successfully.")
-# except Exception as e:
-#     print(f"Failed to load this model. Error: {e}")
-
-# # Check if the file exists
-# if not os.path.exists(filepath):
-#     print("File does not exist.")
-# else:
-#     print("File exists.")
-#     # Check if the file is readable
-#     if os.access(filepath, os.R_OK):
-#         print("File is readable.")
-#         try:
-#             # Try loading the model
-#             model = keras.models.load_model(filepath)
-#             # model = keras.models.load_model(filepath, custom_objects={})
-
-#             print("Model loaded successfully.")
-#         except Exception as e:
-#             print(f"Failed to load model again. Error: {e}")
-#             exit()
-#     else:
-#         print("File is not readable. Check file permissions.")
-#         exit()
+def load_disease_models():
+    global d_models, all_d_loaded_successfully
+    all_d_loaded_successfully = True
+    for model_path in D_MODEL_PATHS:
+        try:
+            d_models.append(load_model(model_path))
+            print(f"Model loaded successfully from {model_path}")
+        except Exception as e:
+            print(f"Failed to load model from {model_path}. Error: {str(e)}")
+            all_d_loaded_successfully = False
 
 
 
+# def load_species_dict(classes_path):
+#     with open(classes_path, 'r') as f:
+#         species_dict = json.load(f)
+#     # Convert keys to integers
+#     species_dict = {int(k): v for k, v in species_dict.items()}
+#     return species_dict
 
 
 
-try:
-    model = load_model(model_path)
-    print("*******************Model loaded successfully*****************")
-except Exception as e:
-    print(f"Failed to load model. Error: {str(e)}")
-    exit()
+def load_image(img_path):
+    with open(img_path, 'rb') as file:
+        img_bytes = file.read()
+    return Image.open(io.BytesIO(img_bytes))
 
-# Load class names from the JSON file
-json_path = 'species.json'
-with open(json_path, 'r') as file:
-    species_dict = json.load(file)
+def load_identification_classes():
+    classes = []
+    with open('species.txt', 'r') as file:
+        for line in file:
+            classes.append(line.strip())
+    return classes
+
+def load_disease_classes():
+    classes = []
+    with open('disease_species.txt', 'r') as file:
+        for line in file:
+            classes.append(line.strip())
+    return classes
 
 
 
 
-# def identify_leaf(image_path):
-#     print(f"Image path: {image_path}")
 
-#     try:
-#         # Load and preprocess the image
-#         image = Image.open(image_path).convert("RGB")
-#         image = image.resize((180, 180))
-#         image_array = img_to_array(image)
-#         image_array = image_array / 255.0
-#         image_array = np.expand_dims(image_array, axis=0)
+def predict_identification(position_weights, image):
+    if image is not None:
+        img = image.resize((150, 150))  # Ensure it is (150, 150, 3)
+        img_array = img_to_array(img)  # This should ensure it has 3 channels
+        img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+        img_array = img_array / 255.0  # Normalize to 0-1 range
 
-#         print(f"Image array shape: {image_array.shape}")
-#         print(f"Image array sample: {image_array[0, 0, 0, :]}")  # Print a sample of the preprocessed image
+        class_labels = load_identification_classes()
+        num_classes = len(class_labels)
+        aggregated_scores = np.zeros(num_classes)
 
-#         # Perform prediction
-#         predictions = model.predict(image_array)
-#         print(f"Predictions: {predictions}")
+        for model in i_models:
+            predictions = model.predict(img_array)[0]  # Get predictions for the single image
+            sorted_indices = np.argsort(predictions)[::-1]  # Sort indices by prediction value
 
-#         # Get top 3 predictions
-#         top_3_indices = np.argsort(predictions[0])[-3:][::-1]
-#         top_3_probs = predictions[0][top_3_indices]
-#         print(f"Top 3 indices: {top_3_indices}")
-#         print(f"Top 3 probabilities: {top_3_probs}")
+            print(predictions);
 
-#         species_list = list(species_dict.items())
+            for position, weight in enumerate(position_weights):
+                if position < len(sorted_indices):
+                    aggregated_scores[sorted_indices[position]] += weight
 
-#         # Get the corresponding species for the top 3 predictions
-#         top_3_species = [(species_list[i][0], species_list[i][1], top_3_probs[idx]) for idx, i in enumerate(top_3_indices)]
-        
-#         for species in top_3_species:
-#             print(f"Predicted species: Key = {species[0]}, Value = {species[1]}, Probability = {species[2]}")
+        # Normalize scores to percentages
+        total_score = np.sum(aggregated_scores)
+        percentage_confidences = (aggregated_scores / total_score) * 100
 
-#         return top_3_species
-
-#     except Exception as e:
-#         print(f"Error: {e}")
-#         return "Error processing image"
-
-
-
-
+        return percentage_confidences
+    else:
+        return []
 
 
 
 
 
 def identify_leaf(image_path):
-    print(f"Image path: {image_path}")
+    if not all_i_loaded_successfully:
+        print("Not all models loaded successfully.")
+        return None
 
+    image = load_image(image_path)
+
+    results = []
     try:
-        # Load and preprocess the image
-        image = Image.open(image_path).convert("RGB")
-        image = image.resize((180, 180))
-        # image_array = img_to_array(image)
-        # image_array = image_array / 255.0
-        image_array = np.expand_dims(image, axis=0)
-
-        print(f"Image array shape: {image_array.shape}")
-        print(f"Image array sample: {image_array[0, 0, 0, :]}")  # Print a sample of the preprocessed image
-
-        # Perform prediction
-        predictions = model.predict(image_array)
-        print(f"Predictions: {predictions}")
-
-        predicted_class_id = str(np.argmax(predictions))
-        print(f"Predicted class ID: {predicted_class_id}")
-
-        # Find the highest value in the matrix
-        # highest_value = np.argmax(predictions[0])
-
-        # print(f"Highest value in the matrix: {highest_value}")
-
-        species_list = list(species_dict.items())
-
-        # Function to get the item based on the predicted class ID
-        def get_item(species_list, index):
-            if len(species_list) > index:
-                return species_list[index]
-            else:
-                return None
-
-        # Example usage
-        item = get_item(species_list, int(predicted_class_id))
-        if item:
-            key, value = item
-            print(f"Predicted species: Key = {key}, Value = {value}")
-            return item
-        else:
-            print("The list does not have enough items.")
-            return "Unknown Species"
+        predictions = predict_identification(POSITION_WEIGHTS, image)
+        class_labels = load_identification_classes()
+        top_3_indices = np.argsort(predictions)[-3:][::-1]
+        for i in top_3_indices:
+            print(f"Class: {class_labels[i]}, Confidence: {predictions[i]:.2f}%")
+            # results.append(f"Class: {class_labels[i]}, Confidence: {predictions[i]:.2f}%")
+            results.append(f"{class_labels[i]} - {predictions[i]:.2f}%")
 
     except Exception as e:
         print(f"Error: {e}")
-        return "Error processing image"
-    
+        return None
+
+    print(results)
+    return results
 
 
 
 
 
 
+def predict_diagnosis(position_weights, image):
+    if image is not None:
+        img = image.resize((150, 150))  # Ensure it is (150, 150, 3)
+        img_array = img_to_array(img)  # This should ensure it has 3 channels
+        img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+        img_array = img_array / 255.0  # Normalize to 0-1 range
+
+        class_labels = load_identification_classes()
+        num_classes = len(class_labels)
+        aggregated_scores = np.zeros(num_classes)
+
+        for model in i_models:
+            predictions = model.predict(img_array)[0]  # Get predictions for the single image
+            sorted_indices = np.argsort(predictions)[::-1]  # Sort indices by prediction value
+
+            print(predictions);
+
+            for position, weight in enumerate(position_weights):
+                if position < len(sorted_indices):
+                    aggregated_scores[sorted_indices[position]] += weight
+
+        # Normalize scores to percentages
+        total_score = np.sum(aggregated_scores)
+        percentage_confidences = (aggregated_scores / total_score) * 100
+
+        return percentage_confidences
+    else:
+        return []
 
 
+def diagnose_leaf(image_path):
+    if not all_d_loaded_successfully:
+        print("Not all models loaded successfully.")
+        return None
 
+    image = load_image(image_path)
 
+    results = []
+    try:
+        predictions = predict_diagnosis(POSITION_WEIGHTS, image)
+        class_labels = load_disease_classes()
+        top_3_indices = np.argsort(predictions)[-3:][::-1]
+        for i in top_3_indices:
+            result = {
+                'class': class_labels[i],
+                'confidence': f"{predictions[i]:.2f}%"
+            }
+            print(f"Class: {result['class']}, Confidence: {result['confidence']}")
+            results.append(result)
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
+    print(results)
+    return results
 
-
-
-
-
-
-
-
-# def identify_leaf(image_path):
-#     print(f"image_path image_path {image_path}")
-
-#     try:
-#         # Load and preprocess the image
-#         image = Image.open(image_path).convert("RGB")
-#         image = image.resize((180, 180)) 
-#         image_array = img_to_array(image)
-#         image_array = image_array / 255.0
-#         image_array = np.expand_dims(image_array, axis=0)
-
-#         print(f"image_path image_path image_array {image_array}")
-
-#         # Perform prediction
-#         predictions = model.predict(image_array)
-
-
-#         print(f"Index {predictions}")
-
-
-
-#         predicted_class_id = str(np.argmax(predictions))
-
-#         # print(f"Index {type(predicted_class_id)}")
-
-#         print(f"Index {predicted_class_id}")
-
-
-#         species_list = list(species_dict.items())
-#         # print(f"Index {species_list}")
-
-#         # Function to get the 204th item
-#         def get_204th_item(species_list):
-#             index = int(predicted_class_id) - 1  # 204th item is at index 203
-#             if len(species_list) > index:
-#                 return species_list[index]
-#             else:
-#                 return None
-
-#         # Example usage
-#         item_204 = get_204th_item(species_list)
-
-#         if item_204:
-#             key, value = item_204
-#             print(f"The 204th item: Key = {key}, Value = {value}")
-#             return item_204
-#         else:
-#             print("The list does not have 204 items.")
-#             return "Unknown Specie"
-
-    
-#        # Function to get key-value pair by index
-#         # def get_key_value_by_index(index):
-#         #     if 0 <= index < len(species_list):
-#         #         return species_list[index]
-#         #     else:
-#         #         return None
-
-
-#         # key_value_pair = get_key_value_by_index(predicted_class_id)
-
-#         # print(f"Index key_value_pair {key_value_pair}")
-
-
-#         # if key_value_pair:
-#         #     key, value = key_value_pair
-#         #     print(f"Index {predicted_class_id}: Key = {key}, Value = {value}")
-#         # else:
-#         #     print(f"Index {predicted_class_id} is out of range")
-
-
-#         # predicted_species = species_dict.get(int(predicted_class_id), "Unknown Species")
-
-#         # print(f"The prediction. predicted_species: {predictions}")
-
-#         # print(f"The prediction. predicted_class_id: {predicted_class_id}")
-
-
-#         # print(f"The prediction. predicted_species: {str(predicted_species)}")
-
-
-
-#         # return predicted_species
-#     except Exception as e:
-#         print(f"Error in prediction: {str(e)}")
-#         return None
+# Load models once when the script is executed
+load_identification_models()
+load_disease_models()

@@ -1,14 +1,9 @@
 const config = {
 
-  backendUrl: `${process.env.BASE_URL}:${process.env.BACKEND_PORT}`,
+  backendUrl: `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BACKEND_PORT}`,
 
-  frontendUrl: `${process.env.BASE_URL}:${process.env.FRONTEND_PORT}`,
- 
-
-  // backendUrl: `http://localhost:8000`,
-
-  // frontendUrl: `http://localhost:3000`,
- 
+  frontendUrl: `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_FRONTEND_PORT}`,
+  
 
  };
  

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import PlantDiagnosisForm from "@/components/forms/plantDiagnosisForm";
 import Navbar from "@/components/partials/nav";
 

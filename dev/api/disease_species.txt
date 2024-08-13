@@ -1,0 +1,43 @@
+Apple Apple scab
+Apple Black rot
+Apple Cedar apple rust
+Apple healthy
+Bacterial leaf blight in rice leaf
+Blight in corn Leaf
+Brown spot in rice leaf
+Cherry (including sour) Powdery mildew
+Cherry (including sour) healthy
+Common Rust in corn Leaf
+Corn (maize) healthy
+Grape Black rot
+Grape Esca Black Measles
+Grape Leaf blight Isariopsis Leaf Spot
+Grape healthy
+Gray Leaf Spot in corn Leaf
+Leaf smut in rice leaf
+Pepper bell Bacterial spot
+Pepper bell healthy
+Potato Early blight
+Potato Late blight
+Potato healthy
+Strawberry Leaf scorch
+Strawberry healthy
+Tomato Bacterial spot
+Tomato Early blight
+Tomato Late blight
+Tomato Leaf Mold
+Tomato Septoria leaf spot
+Tomato Spider mites Two spotted spider mite
+Tomato Target Spot
+Tomato Tomato mosaic virus
+Tomato healthy
+Algal leaf in tea
+Anthracnose in tea
+Bird eye spot in tea
+Brown blight in tea
+Corn crop
+Healthy tea leaf
+Potato crop
+Potato hollow heart
+Red leaf spot in tea
+Tomato canker

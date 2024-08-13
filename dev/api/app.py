@@ -16,34 +16,58 @@ from datetime import datetime
 
 from fastapi.staticfiles import StaticFiles
 
+# import logging
+
+
+# logging.basicConfig(level=logging.DEBUG)
 
 
 
-from controller import identify_leaf
+
+
+from controller import identify_leaf, diagnose_leaf
 from utility import save_image
 
 
-import pickle
+
+from dotenv import load_dotenv
+
 
 app = FastAPI()
 
 # CORS settings to enable remote access to localhost
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "http://127.0.0.1:8080",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1",
-]
-
-# allow_origins=origins,
+# origins = [
+#     os.getenv('BACKEND_URL'),
+#     "http://localhost:8080",
+#     "http://localhost:3000",
+#     "http://127.0.0.1:8080",
+#     "http://127.0.0.1:3000",
+#     "http://127.0.0.1",
+# ]
 
 
-# # Configure CORS settings to allow requests from your Next.js application
+load_dotenv()
+
+base_url = os.getenv('BASE_URL')
+backend_port = os.getenv('BACKEND_PORT')
+frontend_port = os.getenv('FRONTEND_PORT')
+
+
+
+if base_url is not None and backend_port is not None and frontend_port is not None:
+    frontend_url = base_url + ':' + frontend_port
+    backend_url = base_url + ':' + backend_port
+
+    origins = [frontend_url, backend_url]
+else:
+    raise ValueError("One or both environment variables 'BACKEND_URL' or 'BACKEND_PORT' are not set.")
+
+
+
+# Configure CORS settings to allow requests from the frontend Next.js application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update with your Next.js application's origin
+    allow_origins=origins,     
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
@@ -54,18 +78,16 @@ app.mount("/runs", StaticFiles(directory="runs"), name="images")
 
 
 
-
 class ImageData(BaseModel):
     image_data: str
 
-@app.post("/identify-plant/")
-async def upload_image(request: Request, image_data: UploadFile = File(...)):
 
+@app.post("/identify-plant/")
+async def id_plant(request: Request, image_data: UploadFile = File(...)):
 
 
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     new_filename = f"img_{current_time}{os.path.splitext(image_data.filename)[1]}"
-
 
 
     img_data = await image_data.read()
@@ -80,89 +102,51 @@ async def upload_image(request: Request, image_data: UploadFile = File(...)):
     # Construct the direct URL path of the saved file
     file_url = f"{request.base_url}{file_path}"
 
-    # print('THE URL => ' , file_url)
-    # print('THE URL file_path => ' , file_path)
 
-
-
-    # print(type(image_data.filename))
-
-    # print('the image bytes ==> ' , image_bytes)
-    # print('path to identify ==> ' , file_path)
-
-    # Process the image (replace this with your actual image processing code)
     process_image = identify_leaf(file_path)
 
 
-    key, value = process_image
-
-    resp_obj = {
-        'input_image': file_path,
-        # 'output_image': process_image['output_img'],
-        'class_id': key,
-        'specie': value
-
-    }
+    if process_image is None:
+        raise HTTPException(status_code=500, detail="Prediction failed")
 
 
-    return resp_obj
+    print('Output of process image => ' , process_image)
 
-
-
-# def postprocess_prediction(prediction):
-#     # Add postprocessing steps here
-#     return "answer"
-
+    return process_image
 
 
 @app.post("/diagnose-plant/")
-async def upload_image(request: Request, image_data: UploadFile = File(...)):
+async def diagnose_plant(request: Request, image_data: UploadFile = File(...)):
 
 
-
-    # current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # new_filename = f"img_{current_time}{os.path.splitext(image_data.filename)[1]}"
-
+    current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    new_filename = f"img_{current_time}{os.path.splitext(image_data.filename)[1]}"
 
 
-    # img_data = await image_data.read()
+    img_data = await image_data.read()
     
-    # save_directory = "uploads"
+    save_directory = "uploads"
 
-    # # Save the uploaded file to disk with the new filename
-    # file_path = os.path.join(save_directory, new_filename)
-    # with open(file_path, "wb") as buffer:
-    #     buffer.write(img_data)
-
-    # # Construct the direct URL path of the saved file
-    # file_url = f"{request.base_url}{file_path}"
-
-    get_file_path = save_image(image_data)
-    print('the image bytes for diagnsis ==> ' , get_file_path)
+    # Save the uploaded file to disk with the new filename
+    file_path = os.path.join(save_directory, new_filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(img_data)
 
 
-
-  
-    process_image = identify_leaf(get_file_path)
-
-
-    key, value = process_image
-
-    resp_obj = {
-        'input_image': get_file_path,
-        # 'output_image': process_image['output_img'],
-        'class_id': key,
-        'specie': value
-
-    }
+    # Process the image (replace this with your actual image processing code)
+    process_image = diagnose_leaf(file_path)
 
 
-    return resp_obj
+    if process_image is None:
+        raise HTTPException(status_code=500, detail="Prediction failed")
+
+
+    return process_image
 
 
 
 @app.post("/treat-plant/")
-async def upload_image(request: Request, image_data: UploadFile = File(...)):
+async def treat_plant(request: Request, image_data: UploadFile = File(...)):
 
 
 
@@ -202,11 +186,10 @@ async def upload_image(request: Request, image_data: UploadFile = File(...)):
 
 
 
-
-
-
-
-# uvicorn.run(app, host=["localhost", "10.144.121.247"], port=8000)
+@app.get("/test/")
+async def test_plant(request: Request):
+    print('this is test endpoint')
+    return True
 
 if __name__=="__main__":
     uvicorn.run(app)

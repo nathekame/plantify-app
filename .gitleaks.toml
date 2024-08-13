@@ -1,0 +1,40 @@
+[[rules]]
+description = "Ignore /dev/app/.env"
+path = '''dev/app/.env'''
+
+[[rules]]
+description = "Ignore /dev/api/.env"
+path = '''dev/api/.env'''
+
+
+# Rule for BASE_URL
+[[rules]]
+description = "Base URL"
+regex = '''BASE_URL[=]["'\s]*https?:\/\/[a-zA-Z0-9-.]+'''
+tags = ["baseurl"]
+
+# Rule for FRONTEND_PORT
+[[rules]]
+description = "Frontend Port"
+regex = '''FRONTEND_PORT[=]["'\s]*[0-9]{2,5}'''
+tags = ["frontendport"]
+
+# Rule for BACKEND_PORT
+[[rules]]
+description = "Backend Port"
+regex = '''BACKEND_PORT[=]["'\s]*[0-9]{2,5}'''
+tags = ["backendport"]
+
+
+# Rule for NEXT_PUBLIC_BACKEND_PORT
+[[rules]]
+description = "Backend Port"
+regex = '''NEXT_PUBLIC_BACKEND_PORT[=]["'\s]*[0-9]{2,5}'''
+tags = ["backendport"]
+
+
+# Rule for NEXT_PUBLIC_FRONTEND_PORT
+[[rules]]
+description = "Frontend Port"
+regex = '''NEXT_PUBLIC_FRONTEND_PORT[=]["'\s]*[0-9]{2,5}'''
+tags = ["frontendport"]

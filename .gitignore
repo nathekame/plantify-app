@@ -20,6 +20,7 @@
 
 # next.js
 /.next/
+/dev/app/.next/
 /out/
 
 # production
@@ -46,3 +47,11 @@ next-env.d.ts
 
 /data-collection
 /training
+
+
+
+/dev/app/.env
+/dev/api/.env
+
+/models 
+/dev/api/models 

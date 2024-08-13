@@ -1,11 +1,13 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import config from "@/config/config";
 
 const LandingPage: React.FC = () => {
-  console.log(config.frontendUrl)
+  // console.log(config.frontendUrl)
+  // console.log("Environment Variables:", process.env);
+
   return (
     <div className="relative flex justify-center items-center min-h-screen bg-gray-200">
       {/* Background Image */}
@@ -14,7 +16,7 @@ const LandingPage: React.FC = () => {
           src={`${config.frontendUrl}/landing.jpg`}
           alt="Background"
           layout="fill"
-          objectFit="cover"
+          style={{ objectFit: 'cover' }}
           className="w-full h-full"
         />
         
